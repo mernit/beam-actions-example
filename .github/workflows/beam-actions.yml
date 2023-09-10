@@ -11,18 +11,12 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: "Authenticate"
-        - uses: actions/checkout@v3
-          run: |
-            curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh
-            pip3 install --upgrade pip
-            pip3 install beam-sdk
-            beam configure --clientId=$BEAM_CLIENT_ID --clientSecret=$BEAM_CLIENT_SECRET
-      - name: "Serve"
-        - uses: actions/checkout@v3
-          run: |
-              echo "PREVIEW_URL=$(beam serve app.py)" >> $GITHUB_OUTPUT
-      - name: "Generate Preview URL"
-        - uses: actions/checkout@v3
-          run: |
-              echo "${{ env.PREVIEW_URL }}"
+      - uses: actions/checkout@v3
+      - name: "Authenticate and Serve"
+        run: |
+          curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh
+          pip3 install --upgrade pip
+          pip3 install beam-sdk
+          beam configure --clientId=$BEAM_CLIENT_ID --clientSecret=$BEAM_CLIENT_SECRET
+          echo "PREVIEW_URL=$(beam serve app.py)" >> $GITHUB_OUTPUT
+          echo "${{ env.PREVIEW_URL }}"

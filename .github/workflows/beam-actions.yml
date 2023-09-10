@@ -12,8 +12,7 @@ jobs:
     environment: production
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Authenticate Beam and Deploy
+      - name: Authenticate Beam and Create Preview
         env:
           BEAM_CLIENT_ID: ${{ secrets.BEAM_CLIENT_ID }}
           BEAM_CLIENT_SECRET: ${{ secrets.BEAM_CLIENT_SECRET }}

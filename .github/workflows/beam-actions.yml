@@ -1,0 +1,28 @@
+name: deploy-beam
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Authenticate Beam and Deploy
+        env:
+          BEAM_CLIENT_ID: ${{ secrets.BEAM_CLIENT_ID }}
+          BEAM_CLIENT_SECRET: ${{ secrets.BEAM_CLIENT_SECRET }}
+          PROFILE: ${{ secrets.BEAM_PROFILE }}
+          # Replace app.py with the path to your Beam entry point
+          PREVIEW_URL: beam serve app.py
+        run: |
+          curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh
+          pip3 install --upgrade pip
+          pip3 install beam-sdk
+          beam configure --clientId=$BEAM_CLIENT_ID --clientSecret=$BEAM_CLIENT_SECRET
+          echo $PREVIEW_URL

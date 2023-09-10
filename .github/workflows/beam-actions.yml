@@ -12,7 +12,7 @@ jobs:
     environment: production
 
     steps:
-      - name: Authenticate Beam and Create Preview
+      - name: Authenticate and Create Preview
         env:
           BEAM_CLIENT_ID: ${{ secrets.BEAM_CLIENT_ID }}
           BEAM_CLIENT_SECRET: ${{ secrets.BEAM_CLIENT_SECRET }}

@@ -19,9 +19,14 @@ jobs:
       - name: "Serve"
         # Replace app.py with the path to your Beam entry point
         run: |
-          echo "PREVIEW_URL=$(beam serve app.py)" >> $GITHUB_OUTPUT
+          {
+            echo 'PREVIEW_URL<<EOF' 
+            beam serve app.py
+            echo EOF
+          } >> "$GITHUB_ENV"
+
           stopMarker=$(uuidgen)
           echo "::stop-commands::$stopMarker"
       - name: "Generate URL"
         run: |
-          echo "${{ env.PREVIEW_URL }}"
+          echo "$PREVIEW_URL"

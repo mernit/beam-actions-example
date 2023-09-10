@@ -11,9 +11,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      run: |
-        curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh
-        pip3 install --upgrade pip
-        pip3 install beam-sdk
-        beam configure --clientId=$BEAM_CLIENT_ID --clientSecret=$BEAM_CLIENT_SECRET
-        echo $PREVIEW_URL
+      - name: "Authenticate and Serve"
+        run: |
+          curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh
+          pip3 install --upgrade pip
+          pip3 install beam-sdk
+          beam configure --clientId=$BEAM_CLIENT_ID --clientSecret=$BEAM_CLIENT_SECRET
+          echo $PREVIEW_URL

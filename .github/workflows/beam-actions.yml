@@ -1,16 +1,16 @@
 name: deploy-beam
 on: [push]
+env:
+    BEAM_CLIENT_ID: ${{ secrets.BEAM_CLIENT_ID }}
+    BEAM_CLIENT_SECRET: ${{ secrets.BEAM_CLIENT_SECRET }}
+    PROFILE: ${{ secrets.BEAM_PROFILE }}
+    # Replace app.py with the path to your Beam entry point
+    PREVIEW_URL: beam serve app.py
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      env:
-        BEAM_CLIENT_ID: ${{ secrets.BEAM_CLIENT_ID }}
-        BEAM_CLIENT_SECRET: ${{ secrets.BEAM_CLIENT_SECRET }}
-        PROFILE: ${{ secrets.BEAM_PROFILE }}
-        # Replace app.py with the path to your Beam entry point
-        PREVIEW_URL: beam serve app.py
       run: |
         curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh
         pip3 install --upgrade pip

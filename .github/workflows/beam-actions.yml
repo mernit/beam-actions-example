@@ -4,27 +4,22 @@ env:
     BEAM_CLIENT_ID: ${{ secrets.BEAM_CLIENT_ID }}
     BEAM_CLIENT_SECRET: ${{ secrets.BEAM_CLIENT_SECRET }}
     PROFILE: ${{ secrets.BEAM_PROFILE }}
-    # Replace app.py with the path to your Beam entry point
-    PREVIEW_URL: beam serve app.py
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: "Serve"
+      - name: "Authenticate"
         run: |
           curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh
           pip3 install --upgrade pip
           pip3 install beam-sdk
           beam configure --clientId=$BEAM_CLIENT_ID --clientSecret=$BEAM_CLIENT_SECRET
-          echo "PREVIEW_URL=$(beam serve app.py)" >> $GITHUB_OUTPUT
-          echo "${{ env.PREVIEW_URL }}"
       - uses: actions/checkout@v3
       - name: "Serve"
+        # Replace app.py with the path to your Beam entry point
         run: |
           echo "PREVIEW_URL=$(beam serve app.py)" >> $GITHUB_OUTPUT
-      - uses: actions/checkout@v3
       - name: "Generate URL"
         run: |
           echo "${{ env.PREVIEW_URL }}"

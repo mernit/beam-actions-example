@@ -20,8 +20,7 @@ jobs:
         # Replace app.py with the path to your Beam entry point
         run: |
           echo "PREVIEW_URL=$(beam serve app.py)" >> $GITHUB_OUTPUT
+          exit 1
       - name: "Generate URL"
         run: |
           echo "${{ env.PREVIEW_URL }}"
-          exit 1
-

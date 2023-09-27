@@ -3,7 +3,7 @@ import os
 from beam import App, Runtime, Image, Volume
 from transformers import pipeline
 
-
+# Example App
 app = App(
     name="sentiment-analysis",
     runtime=Runtime(

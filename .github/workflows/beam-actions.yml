@@ -14,12 +14,12 @@ jobs:
 
       - name: Set environment variables
         run: |
-          if [[ "${{ github.ref }}" == 'refs/heads/master' ]]; then
-            echo "Setting production environment variables"
+          if [[ "${{ github.ref }}" == 'refs/heads/main' ]]; then
+            echo "Setting environment variables: PROD"
             echo "BEAM_DEPLOY_ENV=prod" >> $GITHUB_ENV
           elif [[ "${{ github.ref }}" == 'refs/heads/staging' ]]; then
-            echo "Setting staging environment variables"
-            echo "BEAM_DEPLOY_ENV=dev" >> $GITHUB_ENV
+            echo "Setting environment variables: STAGING"
+            echo "BEAM_DEPLOY_ENV=staging" >> $GITHUB_ENV
           fi
 
       - name: Authenticate and deploy to Beam

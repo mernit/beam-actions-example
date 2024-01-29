@@ -1,26 +1,37 @@
-name: deploy-beam
+name: Deploy to Beam
 
 on:
   push:
     branches:
       - main
+      - staging
 
 jobs:
   deploy:
-    name: Deploy
     runs-on: ubuntu-latest
-    environment: production
-
     steps:
       - uses: actions/checkout@v3
-      - name: Authenticate Beam and Deploy
+
+      - name: Set environment variables
+        run: |
+          if [[ "${{ github.ref }}" == 'refs/heads/main' ]]; then
+            echo "Setting environment variables: PROD"
+            echo "BEAM_DEPLOY_ENV=prod" >> $GITHUB_ENV
+          elif [[ "${{ github.ref }}" == 'refs/heads/staging' ]]; then
+            echo "Setting environment variables: STAGING"
+            echo "BEAM_DEPLOY_ENV=staging" >> $GITHUB_ENV
+          fi
+
+      - name: Authenticate and deploy to Beam
         env:
-          BEAM_CLIENT_ID: ${{ secrets.BEAM_CLIENT_ID }}
-          BEAM_CLIENT_SECRET: ${{ secrets.BEAM_CLIENT_SECRET }}
-          PROFILE: ${{ secrets.BEAM_PROFILE }}
+          BEAM_CLIENT_ID: ${{ steps.set-vars.outputs.client_id }}
+          BEAM_CLIENT_SECRET: ${{ steps.set-vars.outputs.client_secret }}
         run: |
           curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh
           pip3 install --upgrade pip
           pip3 install beam-sdk
-          beam configure --clientId=$BEAM_CLIENT_ID --clientSecret=$BEAM_CLIENT_SECRET
+          pip3 install fastapi
+
+          echo "beam configure --clientId $BEAM_CLIENT_ID --clientSecret $BEAM_CLIENT_SECRET"
+          beam configure --clientId $BEAM_CLIENT_ID --clientSecret $BEAM_CLIENT_SECRET
           beam deploy app.py

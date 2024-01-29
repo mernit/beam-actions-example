@@ -3,9 +3,11 @@ import os
 from beam import App, Runtime, Image, Volume
 from transformers import pipeline
 
+BEAM_DEPLOY_ENV = os.getenv("BEAM_DEPLOY_ENV", "staging")
+
 # Example App
 app = App(
-    name="sentiment-analysis",
+    name=f"sentiment-analysis-{BEAM_DEPLOY_ENV}",
     runtime=Runtime(
         cpu=1,
         memory="8Gi",

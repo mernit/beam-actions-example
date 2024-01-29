@@ -24,8 +24,8 @@ jobs:
 
       - name: Authenticate and deploy to Beam
         env:
-          BEAM_CLIENT_ID: ${{ steps.set-vars.outputs.client_id }}
-          BEAM_CLIENT_SECRET: ${{ steps.set-vars.outputs.client_secret }}
+          BEAM_CLIENT_ID: ${{ secrets.BEAM_CLIENT_ID }}
+          BEAM_CLIENT_SECRET: ${{ secrets.BEAM_CLIENT_SECRET }}
         run: |
           curl https://raw.githubusercontent.com/slai-labs/get-beam/main/get-beam.sh -sSfL | sh
           pip3 install --upgrade pip
